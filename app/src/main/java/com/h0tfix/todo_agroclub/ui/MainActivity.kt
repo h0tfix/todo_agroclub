@@ -2,18 +2,30 @@ package com.h0tfix.todo_agroclub.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
+import com.github.terrakok.cicerone.NavigatorHolder
+import com.github.terrakok.cicerone.Router
+import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.h0tfix.todo_agroclub.R
 import com.h0tfix.todo_agroclub.databinding.ActivityMainBinding
-import com.h0tfix.todo_agroclub.ui.list.TodoListFragmentDirections
+import com.h0tfix.todo_agroclub.ui.nav.Screens
+import org.kodein.di.DIAware
+import org.kodein.di.DIContext
+import org.kodein.di.android.closestDI
+import org.kodein.di.diContext
+import org.kodein.di.instance
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), DIAware {
 
-    private lateinit var appBarConfiguration: AppBarConfiguration
+    override val diContext: DIContext<*> = diContext(this)
+
+    override val di by closestDI()
+
     private lateinit var binding: ActivityMainBinding
+
+    private val navigatorHolder: NavigatorHolder by instance()
+    private val router: Router by instance()
+
+    private val navigator = object : AppNavigator(this, R.id.content_main) {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,18 +33,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        val navController = findNavController(R.id.content_main)
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        router.navigateTo(Screens.TodoList())
 
         binding.fab.setOnClickListener {
-            val dir = TodoListFragmentDirections.toTodo().setId(null)
-            navController.navigate(dir)
+            router.navigateTo(Screens.Todo(null))
         }
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    override fun onPause() {
+        super.onPause()
+        navigatorHolder.removeNavigator()
     }
+
+    override fun onResumeFragments() {
+        super.onResumeFragments()
+        navigatorHolder.setNavigator(navigator)
+    }
+
 }
