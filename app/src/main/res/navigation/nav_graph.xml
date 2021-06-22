@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/TodoListFragment">
+
+    <fragment
+        android:id="@+id/TodoListFragment"
+        android:name="com.h0tfix.todo_agroclub.ui.list.TodoListFragment"
+        android:label="@string/todo_list_fragment_label"
+        tools:layout="@layout/fragment_todo_list">
+
+        <action
+            android:id="@+id/toTodo"
+            app:destination="@id/TodoFragment">
+
+            <argument
+                android:name="id"
+                android:defaultValue="@null"
+                app:argType="string"
+                app:nullable="true" />
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/TodoFragment"
+        android:name="com.h0tfix.todo_agroclub.ui.details.TodoFragment"
+        android:label="@string/todo_fragment_label"
+        tools:layout="@layout/fragment_todo">
+
+        <action
+            android:id="@+id/toTodoList"
+            app:destination="@id/TodoListFragment" />
+    </fragment>
+
+</navigation>
