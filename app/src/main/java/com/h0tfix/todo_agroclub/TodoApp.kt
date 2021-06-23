@@ -1,6 +1,7 @@
 package com.h0tfix.todo_agroclub
 
 import android.app.Application
+import com.h0tfix.todo_agroclub.ui.list.todoListModule
 import com.h0tfix.todo_agroclub.ui.nav.navModule
 import org.kodein.di.DI
 import org.kodein.di.DIAware
@@ -12,6 +13,7 @@ class TodoApp : Application(), DIAware {
         import(androidXModule(this@TodoApp))
         //binds here
         import(navModule)
+        import(todoListModule)
 
     }
 

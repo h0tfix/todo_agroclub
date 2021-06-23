@@ -32,12 +32,7 @@ class MainActivity : AppCompatActivity(), DIAware {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
-
         router.navigateTo(Screens.TodoList())
-
-        binding.fab.setOnClickListener {
-            router.navigateTo(Screens.Todo(null))
-        }
     }
 
     override fun onPause() {

@@ -2,6 +2,7 @@ package com.h0tfix.todo_agroclub.ui.details
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import com.github.terrakok.cicerone.Router
 import com.h0tfix.todo_agroclub.R
@@ -29,8 +30,11 @@ class TodoFragment : Fragment(R.layout.fragment_todo), DIAware {
     }
 
     companion object {
+        private const val ARG_ID = "id"
         fun newInstance(id: String?): TodoFragment {
-            return TodoFragment()
+            return TodoFragment().apply {
+                arguments = bundleOf(ARG_ID to id)
+            }
         }
     }
 
